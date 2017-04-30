@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>xyz.karthik</groupId>
+    <artifactId>zomg</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>msgpack.org</id>
+            <name>MessagePack Repository for Maven</name>
+            <url>http://msgpack.org/maven2/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.foo</groupId>
+            <artifactId>rocksdbjni</artifactId>
+            <scope>system</scope>
+            <version>5.2.1</version>
+            <systemPath>${basedir}/lib/rocksdbjni-5.2.1-win64.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.msgpack</groupId>
+            <artifactId>msgpack-rpc</artifactId>
+            <version>0.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tv2norge</groupId>
+            <artifactId>java-serf-client</artifactId>
+            <version>v1.0.0</version>
+        </dependency>
+    </dependencies>
+</project>
