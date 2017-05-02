@@ -3,8 +3,11 @@ package xyz.karthik.zomg;
 import no.tv2.serf.client.Client;
 import no.tv2.serf.client.Member;
 import no.tv2.serf.client.SocketEndpoint;
+import no.tv2.serf.client.Stats;
 import xyz.karthik.zomg.utils.Params;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,12 +15,15 @@ import java.util.List;
  */
 public class Discovery {
 
+    private static final String KEY_NODENAME = "nn";
+    private static Stats MY_STATS;
+
     // set up the rpc client for a running serf agent
     private static Client sc;
 
     static {
         try {
-            sc = new Client(new SocketEndpoint(Params.SerfRPC.getIp(), Params.SerfRPC.getPort()));
+            (sc = new Client(new SocketEndpoint(Params.SerfRPC.getIp(), Params.SerfRPC.getPort()))).handshake();
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -26,24 +32,35 @@ public class Discovery {
     // look to join other agents
     static {
         try {
-            sc.join(Params.Members.getMemberSerfs(), false);
+//            sc.join(Params.Members.getMemberSerfs(), false);
+            MY_STATS = sc.stats().getStats();
         } catch (Exception e) {
             System.err.println(e);
         }
     }
 
-    public static boolean isMembers() {
+    public static List<String> getNodes() {
         try {
             List<Member> members = sc.members().getMembers();
-            // rudimentary check to look for
+            List<String> nodeNames = new ArrayList<>();
             for (Member member : members) {
-                boolean contains = Params.Members.getMemberSerfs().contains(member.getAddr().toString() + ":" + member.getPort());
-                if (!contains) return false;
+                try {
+                    String nodename = member.getTags().get(KEY_NODENAME);
+                    nodeNames.add(nodename);
+                }
+                catch (Exception e) {
+                    System.err.println(e);
+                }
             }
-            return true;
+            Collections.sort(nodeNames);
+            return nodeNames;
         } catch (Exception e){
             System.err.println(e);
         }
-        return false;
+        return null;
+    }
+
+    public static String thisNodeName(){
+        return MY_STATS.getTags().get(KEY_NODENAME);
     }
 }

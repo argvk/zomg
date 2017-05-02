@@ -10,7 +10,7 @@ import java.util.List;
 public class Params {
 
     public static class SerfRPC {
-        public static String getIp() {
+        public static String getIp(){
             return System.getProperty("serfRPCIp");
         }
 
